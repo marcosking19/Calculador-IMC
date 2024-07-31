@@ -1,30 +1,35 @@
-import tkinter as tk
-from tkinter import messagebox
-import csv
-from tkinter import PhotoImage
+import tkinter as tk  # Importa el módulo tkinter para crear interfaces gráficas de usuario
+from tkinter import messagebox  # Importa el módulo messagebox para mostrar mensajes de alerta
+import csv  # Importa el módulo csv para manejar archivos CSV
+from tkinter import PhotoImage  # Importa el módulo PhotoImage para manejar imágenes
 
+# Función para calcular el Índice de Masa Corporal (IMC)
 def calcular_imc():
     try:
-        nombre = entry_nombre.get()
-        peso = float(entry_peso.get())
-        altura = float(entry_altura.get()) / 100  # Convertir altura a metros
-        edad = int(entry_edad.get())
-        sexo = var_sexo.get()
-        
+        nombre = entry_nombre.get()  # Obtiene el nombre del cuadro de entrada
+        peso = float(entry_peso.get())  # Obtiene el peso del cuadro de entrada y lo convierte a float
+        altura = float(entry_altura.get()) / 100  # Obtiene la altura, la convierte a float y la convierte a metros
+        edad = int(entry_edad.get())  # Obtiene la edad y la convierte a entero
+        sexo = var_sexo.get()  # Obtiene el sexo del cuadro de selección
+
+        # Asigna un factor de corrección según el sexo
         if sexo == "Hombre":
             ks = 1.0
         elif sexo == "Mujer":
             ks = 1.1
         else:
             raise ValueError("Sexo no válido")
+        
+        # Calcula un factor de ajuste según la edad
         ka = 1 + 0.01 * (edad - 25)
         imc = (peso / (altura ** 2)) * ks * ka
-        mostrar_resultado(imc)
+        mostrar_resultado(imc)  # Muestra el resultado del IMC
     except ValueError as e:
+        # Muestra un mensaje de error si ocurre una excepción
         messagebox.showerror("Error de entrada", str(e))
-
+# Función para mostrar el resultado del IMC
 def mostrar_resultado(imc):
-    resultado_ventana = tk.Toplevel(root)
+    resultado_ventana = tk.Toplevel(root) # Crea una nueva ventana para mostrar el resultado
     resultado_ventana.title("Resultado del IMC")
 
     # Mostrar el resultado del IMC
@@ -39,6 +44,7 @@ def mostrar_resultado(imc):
         ("Obesidad", "30 o más")
     ]
     
+    # Muestra las categorías de IMC en la ventana de resultado
     for categoria, valor in categorias:
         frame_categoria = tk.Frame(resultado_ventana)
         frame_categoria.pack(pady=2)
@@ -55,34 +61,44 @@ def mostrar_resultado(imc):
     else:
         mensaje = "Obesidad"
     
+    # Muestra la categoría del IMC calculado
     tk.Label(resultado_ventana, text=f"Categoría: {mensaje}", font=('Arial', 12, 'bold')).pack(pady=10)
 
+# Función para guardar los datos del usuario en un archivo CSV
 def guardar_datos():
-    nombre = entry_nombre.get()
+    nombre = entry_nombre.get() # Obtiene el nombre del cuadro de entrada
     if not nombre:
+        # Muestra un mensaje de error si el nombre está vacío
         messagebox.showerror("Error de entrada", "El nombre del paciente no puede estar vacío.")
         return
     try:
-        peso = float(entry_peso.get())
-        altura = float(entry_altura.get()) / 100  # Convertir altura a metros
-        edad = int(entry_edad.get())
-        sexo = var_sexo.get()
+        peso = float(entry_peso.get())  # Obtiene el peso del cuadro de entrada y lo convierte a float
+        altura = float(entry_altura.get()) / 100  # Obtiene la altura, la convierte a float y la convierte a metros
+        edad = int(entry_edad.get())  # Obtiene la edad y la convierte a entero
+        sexo = var_sexo.get()  # Obtiene el sexo del cuadro de selección
         
+        # Asigna un factor de corrección según el sexo
         if sexo == "Hombre":
             ks = 1.0
         elif sexo == "Mujer":
             ks = 1.1
         else:
             raise ValueError("Sexo no válido")
+        # Calcula un factor de ajuste según la edad
         ka = 1 + 0.01 * (edad - 25)
+        # Calcula el IMC ajustado por sexo y edad
         imc = (peso / (altura ** 2)) * ks * ka
+
+        # Guarda los datos en un archivo CSV
         with open(f"{nombre}.csv", mode='w', newline='') as file:
             writer = csv.writer(file)
             writer.writerow(["Nombre", "Peso", "Altura", "Edad", "Sexo", "IMC"])
             writer.writerow([nombre, peso, altura, edad, sexo, imc])
+        # Muestra un mensaje informando que los datos han sido guardados
         messagebox.showinfo("Datos guardados", f"Los datos han sido guardados en {nombre}.csv")
         
     except ValueError as e:
+        # Muestra un mensaje de error si ocurre una excepción
         messagebox.showerror("Error de entrada", str(e))
 
 # Crear la ventana principal
