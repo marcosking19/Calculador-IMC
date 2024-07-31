@@ -27,4 +27,8 @@ Este proyecto fue desarrollado por Leal Sanchez Juan Marcos. Agradecemos cualqui
 sugerencia para mejorar la funcionalidad y el diseño de la aplicación. Si deseas contribuir al proyecto, 
 por favor contacta a Marcos Leal.
 
+Requisitos de instalación:
+Para instalar las dependencias necesarias para ejecutar esta aplicación, por favor, ejecuta el siguiente comando:
+pip install -r requirements.txt
+
 ¡Gracias por utilizar nuestra Calculadora de IMC! Esperamos que te sea útil y que te ayude a mantenerte saludable. Si tienes alguna pregunta o necesitas asistencia adicional, no dudes en contactarnos. ¡Buena suerte y cuídate!
